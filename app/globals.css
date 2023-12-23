@@ -3,6 +3,9 @@
 @tailwind utilities;
  
 @layer base {
+  html {
+    height: 100%;
+  }
   :root {
     --background: 0 0% 100%;
     --foreground: 222.2 84% 4.9%;
@@ -77,6 +80,6 @@
 
 @layer components {
   .navbar {
-    @apply fixed top-0 z-30 w-full items-center px-6 py-3;
+    @apply fixed top-0 z-30 w-full items-center py-3;
   }
 }
