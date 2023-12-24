@@ -1,20 +1,32 @@
 'use client'
 
 import { Button } from '@/components/ui/button'
+import { useIsVisible } from '@/hooks/useIsVisible'
 import { Editor, FloatingMenu } from '@tiptap/react'
 import { Code, Image as Img, Plus } from 'lucide-react'
-import { useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 
 type TToolbar = {
   editor: Editor
 }
 
 const Toolbar = ({ editor }: TToolbar) => {
+  const ref = useRef(null)
   const [isOpen, setOpen] = useState(false)
+  const isVisible = useIsVisible(ref)
+  
+
+  useEffect(() => {
+    if(!isVisible) {
+      if(isOpen) {
+        setOpen(false)
+      }
+    }
+  }, [isOpen, isVisible])
 
   return (
-    <FloatingMenu editor={editor} tippyOptions={{ duration: 100 }} className="-ml-20">
-        <div className="flex gap-4 transition-all bg-white">
+    <FloatingMenu editor={editor} tippyOptions={{ duration: 100 }} className="-ml-20 max-w-fit" >
+        <div className="flex gap-4 transition-all bg-white" ref={ref}>
           <Button 
             variant="outline" 
             className="rounded-full" 
