@@ -19,16 +19,19 @@
     "@tiptap/pm": "^2.1.13",
     "@tiptap/react": "^2.1.13",
     "@tiptap/starter-kit": "^2.1.13",
+    "@uploadthing/react": "^6.0.2",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.0.0",
     "lowlight": "^3.1.0",
     "lucide-react": "^0.300.0",
+    "mongoose": "^8.0.3",
     "next": "14.0.4",
     "react": "^18",
     "react-dom": "^18",
     "sass": "^1.69.5",
     "tailwind-merge": "^2.1.0",
-    "tailwindcss-animate": "^1.0.7"
+    "tailwindcss-animate": "^1.0.7",
+    "zod": "^3.22.4"
   },
   "devDependencies": {
     "@types/node": "^20",

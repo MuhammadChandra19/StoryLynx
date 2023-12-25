@@ -4,6 +4,14 @@
   > * + * {
     margin-top: 0.75em;
   }
+
+  .is-empty::before {
+    content: attr(data-placeholder);
+    float: left;
+    color: #ced4da;
+    pointer-events: none;
+    height: 0;
+  }
 }
 
 .ProseMirror {

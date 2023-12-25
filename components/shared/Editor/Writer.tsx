@@ -1,6 +1,9 @@
 'use client'
 
 import CodeBlockLowlight from '@tiptap/extension-code-block-lowlight'
+import Document from '@tiptap/extension-document'
+import Placeholder from '@tiptap/extension-placeholder'
+
 import { useEditor, EditorContent } from '@tiptap/react'
 import StarterKit from '@tiptap/starter-kit'
 
@@ -20,14 +23,29 @@ type TWriter = {
 
 
 const Writer = ({ onPublish, isEditable = true, content = '' }: TWriter) => {
+
+  const CustomDocument = Document.extend({
+    content: 'heading block*',
+  })
   
   const editor = useEditor({
     extensions: [
+      CustomDocument,
       StarterKit.configure({
-        codeBlock: false
+        codeBlock: false,
+        document: false
       }),
       CodeBlockLowlight.configure({
         lowlight: setupLowlight(),
+      }),
+      Placeholder.configure({
+        placeholder: ({ node }) => {
+          if (node.type.name === 'heading') {
+            return 'What’s the title?'
+          }
+
+          return 'Can you add some further context?'
+        },
       }),
     ],
     content: content,
@@ -46,7 +64,7 @@ const Writer = ({ onPublish, isEditable = true, content = '' }: TWriter) => {
 
   return (
     <article className="relative">
-      <div className="fixed -top-0 pt-24 z-50">
+      <div className="fixed top-3 pt-24 z-50">
         <Button 
           className="rounded-3xl bg-blue-500 hover:bg-blue-600"
           onClick={handlePublish}
