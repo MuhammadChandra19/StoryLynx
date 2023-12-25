@@ -3,7 +3,7 @@ import Link from 'next/link'
 
 const Topbar = () => {
   return (
-    <nav className="navbar">
+    <nav className="navbar z-50 bg-white">
       <div className="container flex items-center justify-between">
         <Link href="/" >
           <Image src="/assets/storylynx-logo.svg" alt="logo" width={36} height={36}/>

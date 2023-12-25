@@ -3,40 +3,61 @@
 import CodeBlockLowlight from '@tiptap/extension-code-block-lowlight'
 import { useEditor, EditorContent } from '@tiptap/react'
 import StarterKit from '@tiptap/starter-kit'
-import css from 'highlight.js/lib/languages/css'
-import js from 'highlight.js/lib/languages/javascript'
-import ts from 'highlight.js/lib/languages/typescript'
-import html from 'highlight.js/lib/languages/xml'
 
-import { createLowlight } from 'lowlight'
+import { setupLowlight } from './utils'
 
 import './styles.scss'
 import Toolbar from './Toolbar'
 import Popover from './Popover'
+import { Button } from '@/components/ui/button'
+import { useEffect } from 'react'
+
+type TWriter = {
+  onPublish: (content: string) => void
+  isEditable?: boolean
+  content?: string
+}
 
 
-const Writer = () => {
-  const lowlight = createLowlight()
-  lowlight.register('html', html)
-  lowlight.register('css', css)
-  lowlight.register('js', js)
-  lowlight.register('ts', ts)
+const Writer = ({ onPublish, isEditable = true, content = '' }: TWriter) => {
   
   const editor = useEditor({
     extensions: [
-      StarterKit,
+      StarterKit.configure({
+        codeBlock: false
+      }),
       CodeBlockLowlight.configure({
-        lowlight,
+        lowlight: setupLowlight(),
       }),
     ],
-    content: '<p>Hello World! 🌎️</p>',
+    content: content,
   })
+
+  useEffect(() => {
+    if (editor) {
+      editor.setEditable(isEditable)
+    }
+  }, [editor, isEditable])
+
+  const handlePublish = () => {
+    const content = editor?.getHTML()
+    onPublish(content || '')
+  }
 
   return (
     <article className="relative">
+      <div className="fixed -top-0 pt-24 z-50">
+        <Button 
+          className="rounded-3xl bg-blue-500 hover:bg-blue-600"
+          onClick={handlePublish}
+        >
+          Publish
+        </Button>
+      </div>
       {editor && <Toolbar editor={editor} /> }
       {editor && <Popover editor={editor} /> }
       <EditorContent editor={editor} className="max-w-3xl m-auto"/>
+      
     </article>
   )
 }
