@@ -1,12 +1,12 @@
-import { connectToDB } from '../mongoose'
-import userRepository from './userRepository'
+import { connectToDB } from "../mongoose";
+import userRepository from "./userRepository";
 
 const repository = () => {
-  connectToDB()
+  connectToDB();
 
   return {
-    userRepository
-  }
-}
+    userRepository,
+  };
+};
 
-export default repository()
+export default repository();

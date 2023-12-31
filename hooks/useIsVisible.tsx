@@ -1,11 +1,11 @@
-import { MutableRefObject, useEffect, useState } from 'react'
+import { MutableRefObject, useEffect, useState } from "react";
 
 export const useIsVisible = (ref: MutableRefObject<any>) => {
   const [isIntersecting, setIntersecting] = useState(false);
 
   useEffect(() => {
     const observer = new IntersectionObserver(([entry]) =>
-      setIntersecting(entry.isIntersecting)
+      setIntersecting(entry.isIntersecting),
     );
 
     observer.observe(ref.current);
@@ -15,5 +15,4 @@ export const useIsVisible = (ref: MutableRefObject<any>) => {
   }, [ref]);
 
   return isIntersecting;
-
-}
+};
