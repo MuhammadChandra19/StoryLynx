@@ -2,6 +2,7 @@ import { Document, Schema, model, models } from "mongoose";
 
 export interface IStory extends Document {
   _id: string;
+  id: string;
   title: string;
   content: string;
   author: { _id: string; name: string; image: string };
@@ -9,6 +10,7 @@ export interface IStory extends Document {
 }
 
 const storySchema = new Schema({
+  id: { type: String, required: true},
   title: { type: String, required: true },
   content: { type: String, required: true },
   author: {

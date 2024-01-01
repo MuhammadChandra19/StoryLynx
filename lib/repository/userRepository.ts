@@ -28,7 +28,6 @@ const userRepository = () => {
   };
 
   type TGetUserParam = {
-    id: string;
     username: string;
     name: string;
     email: string;

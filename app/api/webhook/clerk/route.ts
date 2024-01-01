@@ -48,9 +48,9 @@ export const POST = async (request: Request) => {
     ];
 
     try {
-      const { userRepository } = repository;
+      const { user } = repository;
 
-      await userRepository.createOrUpdate(
+      await user.createOrUpdate(
         {
           name: [first_name, last_name].join(" "),
           email: userEmail,
