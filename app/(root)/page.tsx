@@ -1,6 +1,10 @@
+import { setupUser } from '@/lib/services/userService';
 import Image from "next/image";
 
-export default function Home() {
+export default async function Home() {
+
+  await setupUser()
+
   return (
     <>
       <section className="flex lg:flex-row flex-col justify-between gap-8 items-center md:h-fit h-auto mb-20">

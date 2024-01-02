@@ -1,5 +1,5 @@
-"use server";
 import User, { IUser } from "../database/models/user.model";
+import { connectToDB } from '../mongoose';
 
 const userRepository = () => {
   const createOrUpdate = async (
@@ -10,7 +10,7 @@ const userRepository = () => {
 
     try {
       await User.findOneAndUpdate(
-        { id },
+        { userId: id },
         {
           username: username?.toLocaleLowerCase(),
           name,
@@ -28,11 +28,12 @@ const userRepository = () => {
   };
 
   type TGetUserParam = {
+    userId: string
     username: string;
     name: string;
     email: string;
   };
-  const getUser = async (params: TGetUserParam) => {
+  const getUser = async (params: Partial<TGetUserParam>) => {
     const user = await User.findOne({
       ...params,
     }).exec();

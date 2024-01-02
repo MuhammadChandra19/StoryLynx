@@ -14,7 +14,7 @@ const storySchema = new Schema({
   title: { type: String, required: true },
   content: { type: String, required: true },
   author: {
-    type: mongoose.Schema.Types.ObjectId,
+    type: Schema.Types.ObjectId,
     ref: "User",
     required: true,
   },
@@ -23,5 +23,5 @@ const storySchema = new Schema({
     default: Date.now,
   },
 });
-
-export default model<IStory>("Story", storySchema);
+const Story = models.Story || model<IStory>("Story", storySchema);
+export default Story

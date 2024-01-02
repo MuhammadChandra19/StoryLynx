@@ -1,5 +1,3 @@
-"use server"
-
 import StorySchema, { IStory } from '../database/models/story.model'
 
 const storyRepository = () => {
