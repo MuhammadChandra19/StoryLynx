@@ -34,7 +34,7 @@ const userRepository = () => {
     email: string;
   };
   const getUser = async (params: Partial<TGetUserParam>) => {
-    const user = await User.findOne({
+    const user = await User.findOne<IUser>({
       ...params,
     }).exec();
 

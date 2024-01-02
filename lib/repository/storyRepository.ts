@@ -1,7 +1,8 @@
+import { randomUUID } from 'crypto'
 import StorySchema, { IStory } from '../database/models/story.model'
 
 const storyRepository = () => {
-  const createNewStory = (story: Partial<Omit<IStory, "_id">>) => {
+  const createNewStory = (story: Partial<IStory>) => {
     try {
       const { author, content, title, id} = story
       const newStory:IStory = new StorySchema({

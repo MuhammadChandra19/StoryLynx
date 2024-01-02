@@ -1,11 +1,34 @@
 "use client";
-
-import { Button } from "@/components/ui/button";
+import { createStory } from '@/lib/services/storyService';
 import Writer from "./Writer";
+// import { auth, currentUser } from '@clerk/nextjs';
 
 const Editor = () => {
-  const publishContent = (content: string) => {
-    console.log(content);
+
+  function getTextFromH1(htmlString: string) {
+    const match = htmlString.match(/<h1>(.*?)<\/h1>/);
+    if (match && match[1]) {
+        return match[1];
+    } else {
+        return null;
+    }
+  }
+
+
+  const publishContent = async (content: string) => {
+    // const user = await currentUser()
+    
+    const title = getTextFromH1(content)
+    if(title) {
+      await createStory({
+        content, 
+        title, 
+        id: title.split('').join('-'),
+      })
+    }
+
+    console.log(title)
+
   };
 
   return (
