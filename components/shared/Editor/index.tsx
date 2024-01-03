@@ -1,41 +1,83 @@
 "use client";
-import { createStory } from '@/lib/services/storyService';
-import Writer from "./Writer";
-// import { auth, currentUser } from '@clerk/nextjs';
 
-const Editor = () => {
+import CodeBlockLowlight from "@tiptap/extension-code-block-lowlight";
+import Document from "@tiptap/extension-document";
+import Placeholder from "@tiptap/extension-placeholder";
 
-  function getTextFromH1(htmlString: string) {
-    const match = htmlString.match(/<h1>(.*?)<\/h1>/);
-    if (match && match[1]) {
-        return match[1];
-    } else {
-        return null;
+import { useEditor, EditorContent } from "@tiptap/react";
+import StarterKit from "@tiptap/starter-kit";
+
+import { getTextFromH1, setupLowlight } from "./utils";
+
+import "./styles.scss";
+import Toolbar from "./Toolbar";
+import Popover from "./Popover";
+import { Button } from "@/components/ui/button";
+import { useEffect } from "react";
+
+type TWriter = {
+  onPublish: (content: string, title: string) => void;
+  isEditable?: boolean;
+  content?: string;
+  isLoading?: boolean
+};
+
+const Writer = ({ onPublish, isEditable = true, content = "", isLoading = false }: TWriter) => {
+  const CustomDocument = Document.extend({
+    content: "heading block*",
+  });
+
+  const editor = useEditor({
+    extensions: [
+      CustomDocument,
+      StarterKit.configure({
+        codeBlock: false,
+        document: false,
+      }),
+      CodeBlockLowlight.configure({
+        lowlight: setupLowlight(),
+      }),
+      Placeholder.configure({
+        placeholder: ({ node }) => {
+          if (node.type.name === "heading") {
+            return "What’s the title?";
+          }
+
+          return "Can you add some further context?";
+        },
+      }),
+    ],
+    content: content,
+  });
+
+  useEffect(() => {
+    if (editor) {
+      editor.setEditable(isEditable);
     }
-  }
+  }, [editor, isEditable]);
 
-
-  const publishContent = async (content: string) => {
-    // const user = await currentUser()
-    
-    const title = getTextFromH1(content)
-    if(title) {
-      await createStory({
-        content, 
-        title, 
-        id: title.split('').join('-'),
-      })
-    }
-
-    console.log(title)
-
+  const handlePublish = () => {
+    const content = editor?.getHTML() || '';
+    const title = getTextFromH1(content) || '';
+    onPublish(content, title);
   };
 
   return (
-    <div className="relative">
-      <Writer onPublish={publishContent} />
-    </div>
+    <article className="relative">
+      <div className="fixed top-3 pt-24 z-50">
+        <Button
+          className="rounded-3xl bg-blue-500 hover:bg-blue-600"
+          onClick={handlePublish}
+          disabled={isLoading}
+        >
+          Publish
+        </Button>
+      </div>
+      {editor && <Toolbar editor={editor} />}
+      {editor && <Popover editor={editor} />}
+      <EditorContent editor={editor} className="max-w-3xl m-auto" />
+    </article>
   );
 };
 
-export default Editor;
+export default Writer;

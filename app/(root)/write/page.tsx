@@ -1,4 +1,5 @@
 import Editor from "@/components/shared/Editor";
+import { createStory } from '@/lib/services/storyService';
 import { auth } from "@clerk/nextjs";
 import { redirect } from "next/navigation";
 
@@ -8,7 +9,15 @@ const Page = async () => {
     redirect("/sign-in");
   }
 
-  return <Editor />;
+  const publishStory = async (content: string, title: string) => {
+    await createStory({
+      content, 
+      title, 
+      id: title.split('').join('-'),
+    })
+  }
+
+  return <Editor onPublish={publishStory} />;
 };
 
 export default Page;

@@ -13,3 +13,12 @@ export const setupLowlight = () => {
 
   return lowlight;
 };
+
+export const getTextFromH1 = (htmlString: string) => {
+  const match = htmlString.match(/<h1>(.*?)<\/h1>/);
+  if (match && match[1]) {
+      return match[1];
+  } else {
+      return null;
+  }
+}
