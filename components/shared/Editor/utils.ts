@@ -22,3 +22,13 @@ export const getTextFromH1 = (htmlString: string) => {
       return null;
   }
 }
+
+export const replaceEmptySpaceAndInsertDash = (str: string) => {
+  // Replace all empty spaces with '-'
+  const stringWithoutSpaces = str.replace(/\s/g, '-');
+  
+  // Insert '-' between every character
+  const stringWithDashes = stringWithoutSpaces.replace(/(.)(?!$)/g, '$1-');
+  
+  return stringWithDashes;
+}

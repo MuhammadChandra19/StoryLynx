@@ -7,7 +7,7 @@ import Placeholder from "@tiptap/extension-placeholder";
 import { useEditor, EditorContent } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 
-import { getTextFromH1, setupLowlight } from "./utils";
+import { getTextFromH1, replaceEmptySpaceAndInsertDash, setupLowlight } from "./utils";
 
 import "./styles.scss";
 import Toolbar from "./Toolbar";
@@ -16,13 +16,13 @@ import { Button } from "@/components/ui/button";
 import { useEffect } from "react";
 
 type TWriter = {
-  onPublish: (content: string, title: string) => void;
+  onPublish: (content: string, title: string, id: string) => void;
   isEditable?: boolean;
   content?: string;
   isLoading?: boolean
 };
 
-const Writer = ({ onPublish, isEditable = true, content = "", isLoading = false }: TWriter) => {
+const Editor = ({ onPublish, isEditable = true, content = "", isLoading = false }: TWriter) => {
   const CustomDocument = Document.extend({
     content: "heading block*",
   });
@@ -59,7 +59,8 @@ const Writer = ({ onPublish, isEditable = true, content = "", isLoading = false 
   const handlePublish = () => {
     const content = editor?.getHTML() || '';
     const title = getTextFromH1(content) || '';
-    onPublish(content, title);
+    const id = replaceEmptySpaceAndInsertDash(title)
+    onPublish(content, title, id);
   };
 
   return (
@@ -80,4 +81,4 @@ const Writer = ({ onPublish, isEditable = true, content = "", isLoading = false 
   );
 };
 
-export default Writer;
+export default Editor;

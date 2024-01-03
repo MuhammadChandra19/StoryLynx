@@ -9,11 +9,11 @@ const Page = async () => {
     redirect("/sign-in");
   }
 
-  const publishStory = async (content: string, title: string) => {
+  const publishStory = async (content: string, title: string, id: string) => {
     await createStory({
       content, 
       title, 
-      id: title.split('').join('-'),
+      id,
     })
   }
 
